@@ -15,43 +15,105 @@
     <script src="https://unpkg.com/supersimpledev@8.6.4/dayjs.js"></script>
     <script type="text/babel">
       const container = document.querySelector('.js-container');
-      const prductcost=20;
-      const shippingcost=5;
-      const totalcost=prductcost+shippingcost;
-      const currentday=dayjs().format('MMMM D')
-      
-      console.log(currentday);
-  
-      const root=ReactDOM.createRoot(container)   
-      setInterval(()=>{
-      const div=(
-    <div> 
-            <button>Good Job</button>
-            <p>My Name is Mariam Hagras</p>  
-        <div>
-            <p>Cotton Socks</p>
-            <p>Price is 10$</p>
-            <button>Add to Cart</button>
-        </div>
-        <div>
-            <p>Prodict Cost: {prductcost}$</p>
-            <p>Shipping Cost:{shippingcost}$</p>
-            <p>Total Cost:{totalcost}$</p>
-            <button>Place your order</button>
-         </div> 
-       
-        <div>
-         <p>Current TIme:{dayjs().format('HH:mm:ss')}</p>
-            
-      
-        </div>
+      const root=ReactDOM.createRoot(container) 
+      function ChatBot(){
+        return(
+          <>
+            <input 
+              placeholder="Send your message to chatbot" 
+              size="30"
+            />
+            <button>Send</button>
+          </>
+        )
+     
+      } 
+      function ChatMessage({message,sender}){
+        // const message=props.message;
+        // const sender=props.sender;
+        // const {message,sender}=props;
+        
+         /* if(sender==='robot'){
+            return(
+               <div>
+              <img src="robot.webp" width="50"/>
+              {message}
+             </div>
+            )
+           
+          }*/
+          return(
+             <div>
+            {sender==='robot'&& (
+              <img src="robot.webp" width="50"/>
+            )}
+           {message}
+           {sender==='user'&&(
+            <img src="user.webp" width="50"/>
+          )}
+          </div>
+          )
          
-    </div>    
-         );
-        root.render(div);},1000)
+        
+      }
+    
+      function Messages(){
+              const messages=[{
+            message:"hello,ChatBot",
+            sender:"user",
+            id:"id1"
+          },
+          {
+            message:"hello,how can i help you?",
+            sender:"robot",
+            id:"id2"
+          }
+          ]
+          function sendMessage(){
+            const newMessage={
+              message:"test message",
+              sender:"user",
+              id:`id${Date.now()}`
+            }
+            messages.push(newMessage);
+            console.log(messages);
+          }
+          return(
+            <>
+            <button onClick={sendMessage}>Send new message</button>
+               {
+                messages.map((messageObj)=>{
+                      return(
+                        <ChatMessage 
+                                  message={messageObj.message}
+                                  sender={messageObj.sender}
+                                  key={messageObj.id}
+                          />
+                      )
+        
+                                          }
+                              )
+              }
+            </>
+          )
       
-      
- 
+
+      }
+   
+      function App(){
+        return(
+             <>
+                {/*ChatBot()*/}
+                <ChatBot/>
+                <Messages/>
+               
+            </>
+        )
+    
+      }
+     
+     
+      root.render(<App/>);
 
     </script>
   </body>
