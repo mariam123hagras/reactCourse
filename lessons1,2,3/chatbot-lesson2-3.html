@@ -2,6 +2,72 @@
 <html>
   <head>
     <title>Chatbot</title>
+    <style>
+      body{
+        font-family:Arial;
+        margin:0;
+        padding:0;
+      }
+      .send-button{
+        background-color:rgb(25,135,84);
+        color:white;
+        padding:12px 20px;
+        margin-left:10px;
+        border:none;
+        border-radius:10px;
+        cursor:pointer;
+        font-size:15px;
+      }
+      .chat-input{
+        padding:12px 15px;
+        border-radius:10px;
+        border-width:1px;
+        font-size:15px;
+        flex-grow:1;
+      
+      }
+      .chat-input-container{
+        display:flex;
+        margin-bottom:60px;
+       
+
+      }
+      .app-container{
+        max-width:600px;
+        margin:0 auto;
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+      }
+      .chat-message-user{
+        display:flex;
+        justify-content:end;
+        align-items:start;
+      }
+      .chat-message-robot{
+        display:flex;
+        justify-content:start;
+        align-items:start;
+      }
+      .chat-message-text{
+        background-color:rgb(238,238,238);
+        padding:10px 15px;
+        border-radius:10px;
+        max-width:300px;
+        margin:5px;
+      }
+      .chat-message-profile{
+        width:45px;
+        
+      }
+      .chat-messages-container{
+        flex-grow:1;
+        margin-top:20px;
+        overflow:scroll;
+        scrollbar-width:none;
+      }
+      /*to position chat input at the bottom we give its parrent class name flex , and directin cloumn ,then we give its siblings flex grow 1 to stretch to the remaing space*/
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
@@ -78,16 +144,19 @@
    
       
         return(
-          <>
+          <div className="chat-input-container">
             <input 
               placeholder="Send your message to chatbot" 
               size="30" onChange={saveInputText}
               value={inputText} 
               onKeyDown={keypress}
+              className="chat-input"
             />
             <button 
-            onClick={sendMessage}>Send</button>
-          </>
+            onClick={sendMessage}
+            className="send-button"
+            >Send</button>
+          </div>
         )
      
       } 
@@ -105,16 +174,23 @@
             )
            
           }*/
+
          
          
           return(
-             <div>
+             <div className={
+              sender==='user'
+              ?'chat-message-user'
+              :'chat-message-robot'
+            }>
             {sender==='robot'&& (
-              <img src="robot.webp" width="50"/>
+              <img src="robot.webp" className="chat-message-profile"/>
             )}
-           {message}
+            <div className="chat-message-text">
+               {message}
+           </div>
            {sender==='user'&&(
-            <img src="user.webp" width="50"/>
+            <img src="user.webp" className="chat-message-profile"/>
           )}
           </div>
           )
@@ -122,9 +198,26 @@
         
       }
     
-      function Messages({messages}){ 
+      function Messages({messages}){
+        // useRef automatically save an html element from the component
+        // ref is a container with special react features
+
+     const chatMessagesRef= React.useRef(null);
+
+        // useEffect lets us run some code after the component is created or updated
+        // hooks doesn't exist inside if statement or inside a function or any thing
+        // [] second parameter of useEffect is a dependency array that tells React when to run the effect, if it's empty it runs only once after the initial render, if it has values it runs whenever those values change
+        React.useEffect(()=>{
+        const containerElem = chatMessagesRef.current;
+        // scrollTop is a property that sets or returns the number of pixels an element's content is scrolled vertically, scrollHeight is a property that returns the entire height of an element in pixels, including padding, but not the border, scrollbar, or margins, so by setting scrollTop to scrollHeight we scroll to the bottom of the container evey time messages change or when component is first created
+        if(containerElem){
+          containerElem.scrollTop = containerElem.scrollHeight;
+        }
+         
+        },[messages])
           return(
-            <>
+            <div className="chat-messages-container"
+            ref={chatMessagesRef}>
                {
                 messages.map((messageObj)=>{
                       return(
@@ -138,7 +231,7 @@
                                           }
                               )
               }
-            </>
+            </div>
           )
       
 
@@ -159,17 +252,18 @@
             
         
         return(
-             <>
+             <div className="app-container">
                 {/*ChatBot()*/}
              { /*by useing curly braces we can save any type of value inside a prop
               ,lifting state up : share state between components by passing them as props in a parent component,
               naming conventions is using the same name for component and prop and its value*/}
-                <ChatBot 
-                messages={messages}
-                setMessages={setMessages}/>
+            
                 <Messages messages={messages} />
+                    <ChatBot 
+                     messages={messages}
+                     setMessages={setMessages}/>
                
-            </>
+            </div>
         )
     
       }
