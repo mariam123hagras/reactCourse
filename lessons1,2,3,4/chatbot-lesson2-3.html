@@ -66,6 +66,13 @@
         overflow:scroll;
         scrollbar-width:none;
       }
+      .welcome-message{
+        text-align:center;
+      }
+      .loading-spinner{
+        height:40px;
+        margin:-15px;
+      }
       /*to position chat input at the bottom we give its parrent class name flex , and directin cloumn ,then we give its siblings flex grow 1 to stretch to the remaing space*/
     </style>
   </head>
@@ -82,6 +89,27 @@
     <script type="text/babel">
       const container = document.querySelector('.js-container');
       const root=ReactDOM.createRoot(container) 
+      // usescrll feature as a custom hook to be resuable to other components 
+      function useAutoScroll(dependencies){
+           // useRef automatically save an html element from the component
+        // ref is a container with special react features
+
+     const chatMessagesRef= React.useRef(null);
+
+        // useEffect lets us run some code after the component is created or updated
+        // hooks doesn't exist inside if statement or inside a function or any thing
+        // [] second parameter of useEffect is a dependency array that tells React when to run the effect, if it's empty it runs only once after the initial render, if it has values it runs whenever those values change
+        React.useEffect(()=>{
+        const containerElem = chatMessagesRef.current;
+        // scrollTop is a property that sets or returns the number of pixels an element's content is scrolled vertically, scrollHeight is a property that returns the entire height of an element in pixels, including padding, but not the border, scrollbar, or margins, so by setting scrollTop to scrollHeight we scroll to the bottom of the container evey time messages change or when component is first created
+        if(containerElem){
+          containerElem.scrollTop = containerElem.scrollHeight;
+        }
+         
+        },[dependencies])
+        return chatMessagesRef;
+
+      }
       function ChatBot({messages,setMessages}){
         //event is an obect that contains information about the event that occurred, such as the type of event, the target element, and any additional data associated with the event.
         const [inputText,setInputText]=React.useState("");
@@ -96,9 +124,19 @@
             async function sendMessage(){
              if(isLoading || inputText.trim() === ""){
     return;
+
   }
           setIsLoading(true);
           setInputText("loading...");
+              const loadingMessage={
+                    message:
+                      <img 
+                      src="https://supersimple.dev/images/loading-spinner.gif" 
+                      className="loading-spinner"/>
+                    ,
+                    sender:"robot",
+                    id:crypto.randomUUID()
+                  }
 
           const newMessages=[
               ...messages,
@@ -106,12 +144,14 @@
                 message:inputText,
                 sender:"user",
                 id:crypto.randomUUID()
-              }
+              },
+              loadingMessage
             ] 
            setMessages(newMessages);
               const response = await Chatbot.getResponseAsync(inputText);
+             
               setMessages([
-              ...newMessages,
+              ...newMessages.slice(0,-1),
               {
                 message:response,
                 sender:"robot",
@@ -199,26 +239,16 @@
       }
     
       function Messages({messages}){
-        // useRef automatically save an html element from the component
-        // ref is a container with special react features
-
-     const chatMessagesRef= React.useRef(null);
-
-        // useEffect lets us run some code after the component is created or updated
-        // hooks doesn't exist inside if statement or inside a function or any thing
-        // [] second parameter of useEffect is a dependency array that tells React when to run the effect, if it's empty it runs only once after the initial render, if it has values it runs whenever those values change
-        React.useEffect(()=>{
-        const containerElem = chatMessagesRef.current;
-        // scrollTop is a property that sets or returns the number of pixels an element's content is scrolled vertically, scrollHeight is a property that returns the entire height of an element in pixels, including padding, but not the border, scrollbar, or margins, so by setting scrollTop to scrollHeight we scroll to the bottom of the container evey time messages change or when component is first created
-        if(containerElem){
-          containerElem.scrollTop = containerElem.scrollHeight;
-        }
-         
-        },[messages])
+        const chatMessagesRef=useAutoScroll(messages)
+     
           return(
             <div className="chat-messages-container"
             ref={chatMessagesRef}>
                {
+                messages.length===0
+                ?
+                (<p className="welcome-message">welcome to the chat!</p>) 
+                :
                 messages.map((messageObj)=>{
                       return(
                         <ChatMessage 
@@ -238,17 +268,8 @@
       }
    
       function App(){
-        const [messages,setMessages]=React.useState ([{
-            message:"hello,ChatBot",
-            sender:"user",
-            id:"id1"
-          },
-          {
-            message:"hello,how can i help you?",
-            sender:"robot",
-            id:"id2"
-          }
-          ])
+        const [messages,setMessages]=React.useState ([]);
+         
             
         
         return(
