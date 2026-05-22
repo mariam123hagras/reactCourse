@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+        
+    </script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script src="https://unpkg.com/supersimpledev@8.6.4/dayjs.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector('.js-container');
+      const root=ReactDOM.createRoot(container) 
+      function ProductDetails({name,price,discount,imageSrc}){
+         return(
+             <>
+              {/*<p>{name}</p>
+              {discount&&(
+                <>
+                  <del><p>price:{price}$</p></del>
+                  <p>discount:{discount}$</p>
+                </>
+              )}
+
+              {!discount&&<p>price:{price}$</p>}
+              <button>Add to Cart</button>
+              */}
+              <p>{name}</p>
+             <img src={imageSrc} width="100"/>
+             {discount?<del><p>price:{price}$</p></del>: <p>price:{price}$</p>}
+              {discount&&<p>discount:{discount}$</p>}
+                <button>Add to Cart</button>
+            </>
+        )
+
+      }
+    
+         
+        
+  
+      function App(){  
+             return(
+              <>
+                <ProductDetails name="socks" price="30" discount="10" imageSrc="socks.webp"/>
+                <ProductDetails name="balls" price="20" imageSrc="balls.webp"/>
+                <ProductDetails name="t-shirts" price="70" imageSrc="t-shits.webp"/>
+              </>
+             ) 
+      }
+     
+     
+      root.render(<App/>);
+
+    </script>
+  </body>
+</html>
