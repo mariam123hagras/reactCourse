@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+  import { useState,useRef,useEffect } from "react";
+  import { ChatBot } from "./components/ChatbotInput";
+  import './App.css'
+  import Messages from "./components/Messages";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
+     
+   
+      function App(){
+        const [messages,setMessages]=useState ([]);
+         
+            
+        
+        return(
+             <div className="app-container">
+                {/*ChatBot()*/}
+             { /*by useing curly braces we can save any type of value inside a prop
+              ,lifting state up : share state between components by passing them as props in a parent component,
+              naming conventions is using the same name for component and prop and its value*/}
+            
+                <Messages messages={messages} />
+                    <ChatBot 
+                     messages={messages}
+                     setMessages={setMessages}/>
+               
+            </div>
+        )
+    
+      }
+      export default App;
+     
