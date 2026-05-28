@@ -1,10 +1,12 @@
 import { useState } from "react";
+import dayjs from "dayjs";
 import {Chatbot} from 'supersimpledev'
 import './ChatInput.css'
 export function ChatBot({messages,setMessages}){
         //event is an obect that contains information about the event that occurred, such as the type of event, the target element, and any additional data associated with the event.
         const [inputText,setInputText]=useState("");
         const [isLoading,setIsLoading]=useState(false);
+
         function saveInputText(event){
         setInputText(event.target.value); 
         }
@@ -34,7 +36,8 @@ export function ChatBot({messages,setMessages}){
               {
                 message:inputText,
                 sender:"user",
-                id:crypto.randomUUID()
+                id:crypto.randomUUID(),
+                time:dayjs().valueOf()
               },
               loadingMessage
             ] 
@@ -46,7 +49,8 @@ export function ChatBot({messages,setMessages}){
               {
                 message:response,
                 sender:"robot",
-                id:crypto.randomUUID()
+                id:crypto.randomUUID(),
+                time:dayjs().valueOf()
               }
             ])
            setInputText("");
@@ -65,6 +69,10 @@ export function ChatBot({messages,setMessages}){
           }else if(event.key==="Escape"){
             setInputText("");
           }
+        }
+        function clearMessages(){
+          localStorage.removeItem("messages");
+          setMessages([]);
         }
 
 
@@ -87,6 +95,11 @@ export function ChatBot({messages,setMessages}){
             onClick={sendMessage}
             className="send-button"
             >Send</button>
+            <button 
+            onClick={clearMessages}
+            className="clear-button">
+                Clear
+            </button>
           </div>
         )
      

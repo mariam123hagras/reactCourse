@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import ChatMessage from "./ChatMessage";
+import dayjs from "dayjs";
 import './Messages.css'
 
 
@@ -26,11 +27,14 @@ export function useAutoScroll(dependencies) {
 
 function Messages({ messages }) {
   const chatMessagesRef = useAutoScroll(messages);
-
   return (
     <div className="chat-messages-container" ref={chatMessagesRef}>
       {messages.length === 0 ? (
-        <p className="welcome-message">welcome to the chat!</p>
+        <>
+          <p className="welcome-message">welcome to the chat!</p>
+         
+        </>
+        
       ) : (
         messages.map((messageObj) => {
           return (
@@ -38,6 +42,7 @@ function Messages({ messages }) {
               message={messageObj.message}
               sender={messageObj.sender}
               key={messageObj.id}
+              time={messageObj.time}
             />
           );
         })
