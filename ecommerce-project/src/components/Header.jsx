@@ -4,10 +4,11 @@ import logoWhite from '../assets/images/logo-white.png'
 import mobileLogo from '../assets/images/mobile-logo.png'
 import cartIcon from '../assets/images/icons/cart-icon.png'
 import searchIcon from '../assets/images/icons/search-icon.png'
-export function Header({cart}){
+export function Header({cart=[]}){
     let totalQuantity=0;
     cart.forEach((cartItem)=>{
           totalQuantity+=cartItem.quantity;
+          console.log(totalQuantity)
     }
       
     )

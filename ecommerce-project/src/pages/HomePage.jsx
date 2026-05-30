@@ -3,9 +3,9 @@ import axios from "axios"
 import { useEffect,useState } from "react";
 import "./HomePage.css";
 import checkMark from "../assets/images/icons/checkmark.png"
-export function HomePage() {
+import { formatMoney } from "../utils/money";
+export function HomePage({cart=[]}) {
   const [products,setProducts]=useState([])
-  const [cart,setCart]=useState([])
   //we need to fetch the data once not evey time the components rereders
   //useEffect runs by strict mode twice to help us fetch bugs in development mode
   useEffect(()=>{
@@ -13,9 +13,7 @@ export function HomePage() {
   .then((response)=>{
     setProducts(response.data)
   })
-axios.get('/api/cart-items').then((response)=>(
-  setCart(response.data)
-))
+
   }
   
   ,[])
@@ -52,7 +50,7 @@ axios.get('/api/cart-items').then((response)=>(
               <div className="product-rating-count link-primary">{product.rating.count}</div>
             </div>
 
-            <div className="product-price">{(product.priceCents/100).toFixed(2)}</div>
+            <div className="product-price">{formatMoney(product.priceCents)}</div>
 
             <div className="product-quantity-container">
               <select>
