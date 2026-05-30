@@ -4,6 +4,10 @@ import './CheckoutHeader.css'
 export function CheckoutPage() {
   return (
     <>
+    {// by link tag you are changing tab icon and by title you are changing text for each page
+    //if we set href to a file name vite will look for this file in public folder
+    }
+    <link rel="icon" type="image/svg+xml" href="images/cart-favicon.png" />
     <title>Checkout</title>
     <CheckoutHeader/>
 
