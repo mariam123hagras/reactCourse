@@ -9,11 +9,11 @@ export function HomePage() {
   //we need to fetch the data once not evey time the components rereders
   //useEffect runs by strict mode twice to help us fetch bugs in development mode
   useEffect(()=>{
-       axios.get('http://localhost:3000/api/products')
+       axios.get('/api/products')
   .then((response)=>{
     setProducts(response.data)
   })
-axios.get('http://localhost:3000/api/cart-items').then((response)=>(
+axios.get('/api/cart-items').then((response)=>(
   setCart(response.data)
 ))
   }
