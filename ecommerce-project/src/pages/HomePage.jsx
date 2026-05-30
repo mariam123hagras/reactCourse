@@ -5,6 +5,7 @@ import "./HomePage.css";
 import checkMark from "../assets/images/icons/checkmark.png"
 export function HomePage() {
   const [products,setProducts]=useState([])
+  const [cart,setCart]=useState([])
   //we need to fetch the data once not evey time the components rereders
   //useEffect runs by strict mode twice to help us fetch bugs in development mode
   useEffect(()=>{
@@ -12,6 +13,9 @@ export function HomePage() {
   .then((response)=>{
     setProducts(response.data)
   })
+axios.get('http://localhost:3000/api/cart-items').then((response)=>(
+  setCart(response.data)
+))
   }
   
   ,[])
@@ -22,7 +26,7 @@ export function HomePage() {
     <>
       <link rel="icon" type="image/svg+xml" href="images/home-favicon.png" />
       <title>Ecommerce-project</title>
-      <Header />
+      <Header cart={cart} />
 
       <div className="home-page">
         <div className="products-grid">
