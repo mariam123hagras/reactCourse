@@ -11,19 +11,17 @@ import axios from "axios";
 function App() {
   const [cart, setCart] = useState([]);
   useEffect(() => {
-    axios.get("/api/cart-items?expand=product").then((response) => {   console.log("Cart data:", response.data);  // ← add this
-      console.log("Type:", typeof response.data); // ← and this
-      setCart(response.data)
-
-    })
-      .catch((err) => console.error("Cart fetch failed:", err)); // ← any errors?
-    
+    const fetchAppData = async () => {
+      const response = await axios.get("/api/cart-items?expand=product");
+      setCart(response.data);
+    };
+    fetchAppData();
   }, []);
   return (
     <>
       <Routes>
         <Route index element={<HomePage cart={cart} />} />
-        <Route path="checkouts" element={<CheckoutPage cart={cart}/>} />
+        <Route path="checkouts" element={<CheckoutPage cart={cart} />} />
         <Route path="orders" element={<OrdersPage cart={cart} />} />
         <Route path="tracking" element={<TrackingPage />} />
         <Route path="*" element={<NotFound />} />
