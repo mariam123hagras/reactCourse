@@ -23,7 +23,10 @@ function App() {
         <Route index element={<HomePage cart={cart} />} />
         <Route path="checkouts" element={<CheckoutPage cart={cart} />} />
         <Route path="orders" element={<OrdersPage cart={cart} />} />
-        <Route path="tracking" element={<TrackingPage />} />
+        {
+          //:orderId,productId are called url parameters
+        }
+        <Route path="tracking/:orderId/:productId" element={<TrackingPage cart={cart} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
