@@ -27,7 +27,7 @@ function App() {
           //:orderId,productId are called url parameters
         }
         <Route path="tracking/:orderId/:productId" element={<TrackingPage cart={cart} />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound cart={cart} />} />
       </Routes>
     </>
   );
