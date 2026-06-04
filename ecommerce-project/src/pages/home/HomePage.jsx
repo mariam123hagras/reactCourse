@@ -1,22 +1,25 @@
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 import "./HomePage.css";
 import { Header } from "../../components/Header";
 import { ProductsGrid } from "./ProductsGrid";
-export function HomePage({ cart = [] ,loadCart}) {
+import { useSearchParams } from "react-router";
+export function HomePage({ cart = [], loadCart }) {
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get("search");
   const [products, setProducts] = useState([]);
   //we need to fetch the data once not evey time the components rereders
   //useEffect runs by strict mode twice to help us fetch bugs in development mode
+  // values from outsisde useEffect should be added in dependency array 
   useEffect(() => {
     const getHomeData = async () => {
-      const response = await axios.get("/api/products");
-
+      const urlPath=searchTerm ? `/api/products?search=${searchTerm}` : "/api/products";
+      const response = await axios.get(urlPath);
       setProducts(response.data);
     };
-    getHomeData()
-  }, []);
+    getHomeData();
+  }, [searchTerm]);
 
   return (
     <>
