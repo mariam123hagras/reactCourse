@@ -14,6 +14,12 @@ describe('formatMoney', () => {
         expect(formatMoney(2000)).toBe('$20.00');
         expect(formatMoney(100)).toBe('$1.00');
     });
+    it('formats 000 as $0.00', () => {
+        expect(formatMoney(0)).toBe('$0.00');
+    })
+    it('formats -100 as -$1.00', () => {
+        expect(formatMoney(-100)).toBe('-$1.00');
+    })
 
 })
 

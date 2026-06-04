@@ -12,8 +12,10 @@ vi.mock("axios");
 // within lets us find things within a specific element instead of the whole document for example we can find the link within the product container instead of the whole document
 describe("HomePage Component", () => {
   let loadCart;
+  let user;
   beforeEach(() => {
     loadCart = vi.fn();
+    user= userEvent.setup();
   });
   //   mock the implementaton make the mock do whatever we want
   axios.get.mockImplementation(async (url) => {
@@ -66,4 +68,13 @@ describe("HomePage Component", () => {
       ),
     ).toBeInTheDocument();
   });
+  it("Add to cart button Work",async()=>{
+    render(
+      <MemoryRouter>
+        <HomePage loadCart={loadCart} cart={[]} />
+      </MemoryRouter>,
+    );
+    const addToCartButtons = await screen.findAllByTestId("add-to-cart-button");
+    expect(addToCartButtons.length).toBe(2);
+  })
 });
