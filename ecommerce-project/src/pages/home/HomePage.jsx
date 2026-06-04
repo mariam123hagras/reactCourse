@@ -1,9 +1,11 @@
-import { Header } from "../../components/Header";
+
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { ProductsGrid } from "./ProductsGrid";
+
 import "./HomePage.css";
-export function HomePage({ cart = [] }) {
+import { Header } from "../../components/Header";
+import { ProductsGrid } from "./ProductsGrid";
+export function HomePage({ cart = [] ,loadCart}) {
   const [products, setProducts] = useState([]);
   //we need to fetch the data once not evey time the components rereders
   //useEffect runs by strict mode twice to help us fetch bugs in development mode
@@ -23,7 +25,7 @@ export function HomePage({ cart = [] }) {
       <Header cart={cart} />
 
       <div className="home-page">
-        <ProductsGrid products={products} />
+        <ProductsGrid products={products} loadCart={loadCart} />
       </div>
     </>
   );
