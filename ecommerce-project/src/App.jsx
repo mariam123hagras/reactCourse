@@ -22,7 +22,7 @@ function App() {
     <>
       <Routes>
         <Route index element={<HomePage cart={cart} loadCart={loadCart} />} />
-        <Route path="checkouts" element={<CheckoutPage cart={cart} />} />
+        <Route path="checkouts" element={<CheckoutPage cart={cart} loadCart={loadCart} />} />
         <Route path="orders" element={<OrdersPage cart={cart} />} />
         {
           //:orderId,productId are called url parameters
