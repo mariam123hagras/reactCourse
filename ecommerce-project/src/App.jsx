@@ -10,6 +10,8 @@ import axios from "axios";
 import { HomePage } from "./pages/home/HomePage";
 
 function App() {
+  //thisenables axios in console:axios.get('/api/cart-items') in console will work after this line
+  window.axios=axios;
   const [cart, setCart] = useState([]);
   const loadCart = async () => {
     const response = await axios.get("/api/cart-items?expand=product");
